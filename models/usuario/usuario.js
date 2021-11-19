@@ -48,19 +48,19 @@ const userSchema = new Schema({
     toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals
 });
 
-projectSchema.virtual("avancesCreados", {
+userSchema.virtual("avancesCreados", {
     ref: "Avance",
     localField: "_id",
     foreignField: "creadorPor",
 });
 
-projectSchema.virtual("inscripciones", {
+userSchema.virtual("inscripciones", {
     ref: "Inscripcion",
     localField: "_id",
     foreignField: "estudiante",
 });
 
-projectSchema.virtual("proyectosLiderados", {
+userSchema.virtual("proyectosLiderados", {
     ref: "Proyecto",
     localField: "_id",
     foreignField: "lider",
