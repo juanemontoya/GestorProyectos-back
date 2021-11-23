@@ -28,7 +28,7 @@ const avanceSchema = new Schema({
         ref: ProjectModel,
         required: true,
     },
-    creadorPor:{
+    creadoPor:{
         type: Schema.Types.ObjectId,
         ref: UserModel,
         required: true,

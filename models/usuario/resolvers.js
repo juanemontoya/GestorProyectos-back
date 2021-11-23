@@ -4,11 +4,11 @@ const resolversUsuario = {
 
   Query: {
     Usuarios: async (parent, args) => {
-      const usuarios = await UserModel.find();
+      const usuarios = await UserModel.find().populate('avancesCreados').populate('proyectosLiderados').populate('inscripciones');
       return usuarios;
     },
     Usuario: async (parent, args) => {
-      const usuario = await UserModel.findOne({ _id: args._id });
+      const usuario = await UserModel.findOne({ _id: args._id }).populate('inscripciones');
       return usuario;
     },
   },  
