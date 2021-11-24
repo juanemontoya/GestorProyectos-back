@@ -6,6 +6,10 @@ const resolversProyecto = {
       const proyectos = await ProjectModel.find().populate('avances').populate('inscripciones');
       return proyectos;
     },
+    Proyecto: async (parent, args) => {
+      const proyecto = await ProjectModel.findOne({ _id: args._id });
+      return proyecto; //El error dice que ".Proyecto" está definido en el resolver pero no en el esquema
+    },
   },
   Mutation: {
     crearProyecto: async (parent, args) => {
