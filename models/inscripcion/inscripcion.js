@@ -14,7 +14,7 @@ const inscriptionSchema = new Schema({
         type: String,
         enum: ["ACEPTADO", "RECHAZADO", "PENDIENTE"],
         default: "PENDIENTE",
-        required: true,
+        required: false,
     },
     fechaIngreso:{
         type: Date,
