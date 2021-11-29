@@ -20,6 +20,10 @@ const userSchema = new Schema({
             message:'El formato de correo electrónico digitado está erroneo',
         },
     },
+    password:{
+        type: String,
+        required: true,
+    },
     identificacion:{
         type: String,
         required: true,
