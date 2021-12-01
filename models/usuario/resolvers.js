@@ -25,8 +25,8 @@ const resolversUsuario = {
       return usuario;
     },
     Estudiantes: async (parent, args) => {
-      const estudiantes = await UserModel.find({rol: args.rol});
-      return estudiantes;
+      const estudiantes = await UserModel.find({rol: 'ESTUDIANTE'});
+      return estudiantes; //Este es para traer solo los estudiantes a los líderes
     },
   },  
   Mutation: {

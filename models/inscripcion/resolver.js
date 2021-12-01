@@ -1,13 +1,13 @@
-import { InscriptionModel } from './inscripcion.js';
+import { InscriptionModel } from "./inscripcion.js";
 
 const resolverInscripciones = {
   Query: {
     Inscripciones: async (parent, args) => {
-      const inscripciones = await InscriptionModel.find().populate('proyecto');
+      const inscripciones = await InscriptionModel.find().populate("proyecto");
       return inscripciones;
     },
   },
-  
+
   Mutation: {
     crearInscripcion: async (parent, args) => {
       const inscripcionCreada = await InscriptionModel.create({
@@ -20,7 +20,7 @@ const resolverInscripciones = {
       const inscripcionAprobada = await InscriptionModel.findByIdAndUpdate(
         args.id,
         {
-          estado: 'ACEPTADO',
+          estado: "ACEPTADO",
           fechaIngreso: Date.now(),
         },
         { new: true }
@@ -31,7 +31,7 @@ const resolverInscripciones = {
       const inscripcionRechazada = await InscriptionModel.findByIdAndUpdate(
         args.id,
         {
-          estado: 'RECHAZADO',
+          estado: "RECHAZADO",
           fechaIngreso: Date.now(),
         },
         { new: true }

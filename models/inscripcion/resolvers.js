@@ -32,7 +32,7 @@ const resolverInscripciones = {
         args.id,
         {
           estado: 'RECHAZADO',
-          fechaIngreso: Date.now(),
+          fechaIngreso: Date.now(), 
         },
         { new: true }
       );
