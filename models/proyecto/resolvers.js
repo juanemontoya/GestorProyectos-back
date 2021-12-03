@@ -1,15 +1,23 @@
-import { ProjectModel} from './projecto.js'
+import { ProjectModel } from "./projecto.js";
 
 const resolversProyecto = {
   Query: {
     Proyectos: async (parent, args) => {
-      const proyectos = await ProjectModel.find().populate('avances').populate('inscripciones');
+      const proyectos = await ProjectModel.find().populate('lider');
+      // .populate("avances")
+      // .populate("inscripciones");
       return proyectos;
     },
     Proyecto: async (parent, args) => {
       const proyecto = await ProjectModel.findOne({ _id: args._id });
-      return proyecto; //El error dice que ".Proyecto" está definido en el resolver pero no en el esquema
+      return proyecto;
     },
+    // ProyectosLiderados: async (parent, args) => {
+    //   const proyectosLiderados = await ProjectModel.findOne({
+    //     "lider": args.id_lider,
+    //   }).populate('lider');
+    //   return proyectosLiderados;
+    // },
   },
   Mutation: {
     crearProyecto: async (parent, args) => {
@@ -33,8 +41,43 @@ const resolversProyecto = {
       );
       return proyectoEditado;
     },
-    
-    crearObjetivo: async (parent, args)=>{
+
+    activarEstado: async (parent, args) => {
+      const estadoActivo = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          estado: "ACTIVO",
+          fase: "INICIADO",
+        },
+        { new: true }
+      );
+      return estadoActivo;
+    },
+
+    terminarProyecto: async (parent, args) => {
+      const proyectoTerminado = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          fase: "TERMINADO",
+          estado: "INACTIVO",
+        },
+        { new: true }
+      );
+      return proyectoTerminado;
+    },
+
+    problemaProyecto: async (parent, args) => {
+      const problema = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          estado: "INACTIVO",
+        },
+        { new: true }
+      );
+      return problema;
+    },
+
+    crearObjetivo: async (parent, args) => {
       const proyectoConObjetivo = await ProjectModel.findByIdAndUpdate(
         args.idProyecto,
         {
@@ -52,7 +95,8 @@ const resolversProyecto = {
         args.idProyecto,
         {
           $set: {
-            [`objetivos.${args.indexObjetivo}.descripcion`]: args.campos.descripcion,
+            [`objetivos.${args.indexObjetivo}.descripcion`]:
+              args.campos.descripcion,
             [`objetivos.${args.indexObjetivo}.tipo`]: args.campos.tipo,
           },
         },
@@ -75,7 +119,6 @@ const resolversProyecto = {
       );
       return proyectoObjetivo;
     },
-
   },
 };
 
