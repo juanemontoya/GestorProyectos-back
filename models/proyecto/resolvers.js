@@ -4,20 +4,18 @@ const resolversProyecto = {
   Query: {
     Proyectos: async (parent, args) => {
       const proyectos = await ProjectModel.find().populate('lider');
-      // .populate("avances")
-      // .populate("inscripciones");
       return proyectos;
     },
     Proyecto: async (parent, args) => {
       const proyecto = await ProjectModel.findOne({ _id: args._id });
       return proyecto;
     },
-    // ProyectosLiderados: async (parent, args) => {
-    //   const proyectosLiderados = await ProjectModel.findOne({
-    //     "lider": args.id_lider,
-    //   }).populate('lider');
-    //   return proyectosLiderados;
-    // },
+    ProyectosLiderados: async (parent, args) => {
+      const proyectosFilter = await ProjectModel.find({
+        "lider": args.id_lider,
+      }).populate('lider');
+      return proyectosFilter;
+    },
   },
   Mutation: {
     crearProyecto: async (parent, args) => {
