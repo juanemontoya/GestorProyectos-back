@@ -13,8 +13,6 @@ const resolversUsuario = {
          path:"inscripciones",
          populate:{
            path:"proyecto",
-           populate:
-              {path:"avances"},
          }       
        }
     ]);

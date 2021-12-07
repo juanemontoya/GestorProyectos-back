@@ -19,11 +19,11 @@ const projectSchema = new Schema({
     },
     fechaInicio:{
         type: Date,
-        required: true,
+        required: false,
     },
     fechaFin:{
         type: Date,
-        required: true,
+        required: false,
     },
     estado:{
         type: String,
@@ -64,11 +64,11 @@ const projectSchema = new Schema({
 //     foreignField: "proyecto",
 // });
 
-// projectSchema.virtual("inscripciones", {
-//     ref: "Inscripcion",
-//     localField: "_id",
-//     foreignField: "proyecto",
-// });
+projectSchema.virtual("inscripciones", {
+    ref: "Inscripcion",
+    localField: "_id",
+    foreignField: "proyecto",
+});
 
 
 

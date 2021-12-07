@@ -1,19 +1,24 @@
 import { ProjectModel } from "./projecto.js";
+import { InscriptionModel } from "../inscripcion/inscripcion.js";
 
 const resolversProyecto = {
   Query: {
     Proyectos: async (parent, args) => {
-      const proyectos = await ProjectModel.find().populate('lider');
+      const proyectos = await ProjectModel.find()
+        .populate("lider")
+        .populate("inscripciones");
       return proyectos;
     },
     Proyecto: async (parent, args) => {
-      const proyecto = await ProjectModel.findOne({ _id: args._id });
+      const proyecto = await ProjectModel.findOne({ _id: args._id }).populate(
+        "lider"
+      );
       return proyecto;
     },
     ProyectosLiderados: async (parent, args) => {
       const proyectosFilter = await ProjectModel.find({
-        "lider": args.id_lider,
-      }).populate('lider');
+        lider: args.id_lider,
+      }).populate("lider");
       return proyectosFilter;
     },
   },
@@ -61,6 +66,10 @@ const resolversProyecto = {
         },
         { new: true }
       );
+      const inscripcionFinalizada = await InscriptionModel.updateMany(
+        { proyecto: args._id, estado: "ACEPTADO", fechaEgreso: null },
+        { $set: { fechaEgreso: Date.now() } }
+      );
       return proyectoTerminado;
     },
 
@@ -72,6 +81,11 @@ const resolversProyecto = {
         },
         { new: true }
       );
+      const inscripcionFinalizada = await InscriptionModel.updateMany(
+        { proyecto: args._id, estado: "ACEPTADO", fechaEgreso: null },
+        { $set: { fechaEgreso: Date.now() } }
+      );
+      console.log(inscripcionFinalizada);
       return problema;
     },
 
