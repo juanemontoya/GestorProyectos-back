@@ -3,11 +3,22 @@ import { InscriptionModel } from "../inscripcion/inscripcion.js";
 
 const resolversProyecto = {
   Query: {
-    Proyectos: async (parent, args) => {
-      const proyectos = await ProjectModel.find()
-        .populate("lider")
-        .populate("inscripciones");
-      return proyectos;
+    Proyectos: async (parent, args, context) => {
+      console.log("User Context:", context);
+      
+      if (context.userData.rol === "LIDER") {
+        const proyectos = await ProjectModel.find({
+          lider: context.userData._id,
+        })
+          .populate("lider")
+          .populate("inscripciones");
+        return proyectos;
+      } else {
+        const proyectos = await ProjectModel.find()
+          .populate("lider")
+          .populate("inscripciones");
+        return proyectos;
+      }
     },
     Proyecto: async (parent, args) => {
       const proyecto = await ProjectModel.findOne({ _id: args._id }).populate(
@@ -26,9 +37,6 @@ const resolversProyecto = {
     crearProyecto: async (parent, args) => {
       const proyectoCreado = await ProjectModel.create({
         nombre: args.nombre,
-        estado: args.estado,
-        fechaInicio: args.fechaInicio,
-        fechaFin: args.fechaFin,
         presupuesto: args.presupuesto,
         lider: args.lider,
         objetivos: args.objetivos,
@@ -51,6 +59,7 @@ const resolversProyecto = {
         {
           estado: "ACTIVO",
           fase: "INICIADO",
+          fechaInicio: Date.now(),
         },
         { new: true }
       );
@@ -63,10 +72,12 @@ const resolversProyecto = {
         {
           fase: "TERMINADO",
           estado: "INACTIVO",
+          fechaFin: Date.now(),
         },
         { new: true }
       );
-      const inscripcionFinalizada = await InscriptionModel.updateMany(
+      // const inscripcionFinalizada =
+      await InscriptionModel.updateMany(
         { proyecto: args._id, estado: "ACEPTADO", fechaEgreso: null },
         { $set: { fechaEgreso: Date.now() } }
       );
@@ -78,14 +89,14 @@ const resolversProyecto = {
         args._id,
         {
           estado: "INACTIVO",
+          fechaFin: Date.now(),
         },
         { new: true }
       );
-      const inscripcionFinalizada = await InscriptionModel.updateMany(
+      await InscriptionModel.updateMany(
         { proyecto: args._id, estado: "ACEPTADO", fechaEgreso: null },
         { $set: { fechaEgreso: Date.now() } }
       );
-      console.log(inscripcionFinalizada);
       return problema;
     },
 

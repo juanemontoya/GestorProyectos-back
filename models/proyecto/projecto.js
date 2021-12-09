@@ -37,7 +37,7 @@ const projectSchema = new Schema({
     },
     lider:{
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         ref: UserModel, //Hace referencia al modelo usuarios al tener la relación entre las tablas
     },
     objetivos:[
