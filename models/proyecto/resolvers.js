@@ -2,6 +2,14 @@ import { ProjectModel } from "./projecto.js";
 import { InscriptionModel } from "../inscripcion/inscripcion.js";
 
 const resolversProyecto = {
+  Proyecto: {
+    inscripciones: async (parent, args, context) => {
+      const inscripciones = await InscriptionModel.find({
+        proyecto: parent._id,
+      });
+      return inscripciones;
+    },
+  },
   Query: {
     Proyectos: async (parent, args, context) => {
       console.log("User Context:", context);
@@ -11,12 +19,12 @@ const resolversProyecto = {
           lider: context.userData._id,
         })
           .populate("lider")
-          .populate("inscripciones");
+          // .populate("inscripciones");
         return proyectos;
       } else {
         const proyectos = await ProjectModel.find()
           .populate("lider")
-          .populate("inscripciones");
+          // .populate("inscripciones");
         return proyectos;
       }
     },
@@ -98,6 +106,17 @@ const resolversProyecto = {
         { $set: { fechaEgreso: Date.now() } }
       );
       return problema;
+    },
+    activarProyecto: async (parent, args) => {
+      const proyectoActivo = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          estado: "ACTIVO",
+          fechaInicio: Date.now(),
+        },
+        { new: true }
+      );
+      return proyectoActivo;
     },
 
     crearObjetivo: async (parent, args) => {
