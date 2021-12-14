@@ -22,6 +22,7 @@ const tiposUsuario = gql`
     Usuarios: [Usuario]
     Usuario(_id: String!): Usuario
     Estudiantes(rol: String!): [Usuario]
+    
   }
 
   type Mutation {

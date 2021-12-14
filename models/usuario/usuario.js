@@ -71,6 +71,7 @@ userSchema.virtual("proyectosLiderados", {
 });
 
 
+
 const UserModel = model('User', userSchema);
 
 export { UserModel };

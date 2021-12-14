@@ -15,7 +15,7 @@ const tiposInscripcion = gql`
   }
   
   type Query {
-    Inscripciones: [Inscripcion]
+    InscripcionesVerProyectos: [Inscripcion]
   }
   
   type Mutation {

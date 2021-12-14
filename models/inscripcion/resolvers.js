@@ -2,12 +2,18 @@ import { InscriptionModel } from './inscripcion.js';
 
 const resolverInscripciones = {
   Query: {
-    Inscripciones: async (parent, args) => {
-      const inscripciones = await InscriptionModel.find().populate('proyecto');
-      return inscripciones;
+    InscripcionesVerProyectos: async (parent, args, context) => {
+
+      //console.log("el context es,", context);
+
+      if (context.userData.rol === 'ESTUDIANTE') {
+        const inscripciones = await InscriptionModel.find({ estudiante: context.userData._id, estado: 'ACEPTADO', fechaEgreso: null }).populate('proyecto');
+        console.log(inscripciones)
+        return inscripciones;
+      }
     },
   },
-  
+
   Mutation: {
     crearInscripcion: async (parent, args) => {
       const inscripcionCreada = await InscriptionModel.create({

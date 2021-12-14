@@ -7,6 +7,10 @@ const resolversAvance = {
       const avances = await ModeloAvance.find().populate('proyecto').populate('creadoPor');
       return avances;
     },
+    detalleAvance: async(parent, args) =>{
+      const detalleAvance = await ModeloAvance.findOne({_id: args._id}).populate('proyecto').populate('creadoPor');
+      return detalleAvance;
+    },
     filtrarAvance: async (parents, args) => {
       const avanceFiltrado = await ModeloAvance.find({ proyecto: args._id })
         .populate('proyecto')
@@ -14,35 +18,35 @@ const resolversAvance = {
       return avanceFiltrado;
     },
     avanceLider: async (parents, args, context) => {
-      console.log("El contexto es: ",context)
-      const avancesTotales =[]
-      if(context.userData.rol === "LIDER"){
+      const avancesTotales = []
+      if (context.userData.rol === 'LIDER') {
         const avances = await ModeloAvance.find({
           creadoPor: context.userData._id,
         }).populate('proyecto').populate('creadoPor');
-        console.log(avances)
-        avances.forEach(avance =>{
-          if(avance.proyecto.lider.valueOf() === args.lider){
+        avances.forEach(avance => {
+          if (avance.proyecto.lider.valueOf() === context.userData._id) {
             avancesTotales.push(avance);
           }
         })
         return avancesTotales;
       }
-      else if(context.userData.Rol === 'ESTUDIANTE'){
-        const avances = await ModeloAvance.find({estudiante:context.userData._id}).populate('proyecto').populate('estudiante');
+      else if (context.userData.rol === 'ESTUDIANTE') {
+        const avances = await ModeloAvance.find({ estudiante: context.userData._id }).populate('proyecto');
+        /*.populate('estudiante');*/
         return avances;
       }
     },
   },
-  
+
   Mutation: {
-    crearAvance: async (parents, args) => {
+    crearAvance: async (parents, args, context) => {
+      console.log("ARGUMENTOS SON: ", args)
       const proyecto = await ProjectModel.findById(args.proyecto).populate("avances")
-      if(proyecto.avances.length === 0 || proyecto.avances === null){
-        await ProjectModel.findByIdAndUpdate(args.proyecto,{
+      if (proyecto.avances.length === 0 || proyecto.avances === null) {
+        await ProjectModel.findByIdAndUpdate(args.proyecto, {
           fase: "DESARROLLO",
         },
-        {new:true})
+          { new: true })
       }
       const inscripcion = await ProjectModel.findById(args.proyecto).populate([
         {
@@ -50,12 +54,12 @@ const resolversAvance = {
         }
       ])
       let isEnabled = false;
-      inscripcion.inscripciones.map((inscripcion)=>{
-        if(args.creadoPor === inscripcion.estudiante.toString() && inscripcion.estado == 'ACEPTADO'){
+      inscripcion.inscripciones.map((inscripcion) => {
+        if (args.creadoPor === inscripcion.estudiante.toString() && inscripcion.estado == 'ACEPTADO') {
           isEnabled = true
         }
       })
-      if(isEnabled){
+      if (isEnabled) {
         const avanceCreado = ModeloAvance.create({
           fecha: args.fecha,
           descripcion: args.descripcion,
@@ -69,9 +73,7 @@ const resolversAvance = {
     editarAvance: async (parent, args) => {
       const avanceEditado = await ModeloAvance.findByIdAndUpdate(
         args._id,
-        {
-          observaciones: args.observaciones,
-        },
+        { ...args.campos },
         { new: true }
       );
       return avanceEditado;

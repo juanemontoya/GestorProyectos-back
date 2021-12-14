@@ -28,6 +28,21 @@ const resolversUsuario = {
       const estudiantes = await UserModel.find({rol: args.rol});
       return estudiantes;
     },
+    /*traerProyectos: async (parent, args) =>{
+
+      const proyectos = await UserModel.findOne({_id: args._id}).populate([
+        {
+          path:"inscripciones",
+          populate:{
+            path:"Proyecto",
+          }       
+        }
+     ]);
+      const proyectosFiltrados = proyectos.inscripciones.filter(pr => pr.estado==='ACEPTADO')
+      console.log("PROYECTOS DE TRAER PROYECTOS: ", proyectosFiltrados);
+      return proyectosFiltrados;
+
+    }*/
   },  
   Mutation: {
     crearUsuario: async (parent, args) => {

@@ -15,7 +15,7 @@ const resolversAutenticacion = {
           rol: args.rol,
           password: hashedPassword,
         });
-        console.log('Usuario Creado: ', usuarioCreado);
+        //console.log('Usuario Creado: ', usuarioCreado);
         return {
           token: generateToken({
             _id: usuarioCreado._id,
@@ -46,7 +46,7 @@ const resolversAutenticacion = {
       },
 
       refreshToken: async(parent, args, context) =>{
-        console.log('contexto: ', context);
+        //console.log('contexto: ', context);
         if (!context.userData) {
           return {
             error: 'token no valido',
