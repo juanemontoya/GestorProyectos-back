@@ -78,49 +78,6 @@ const resolversAvance = {
       );
       return avanceEditado;
     },
-    /*
-    editarAvance: async (parent, args) => {
-      const lider = await ModeloAvance.findById(args._id).populate("creadoPor")
-      //CASO DE QUE SEA EL LIDER
-      if(args.creadoPor == lider._id.toString()){
-        const avanceEditado = await ModeloAvance.findByIdAndUpdate(
-          args.creadoPor,
-          {
-            observaciones: args.observaciones,
-          },
-          {new:true}
-        );
-        return avanceEditado;
-      }
-      //CASO DE QUE NO SEA EL LIDER
-      else{
-        const proyecto = await ModeloAvance.findById(args._id).populate([
-          {
-            path: "proyecto",
-            populate:{
-              path:"inscripciones"
-            }
-          }
-        ])
-        let isEnabled = false;
-        proyecto.proyecto.inscripciones.map((inscripcion)=>{
-          if(args.creadoPor === inscripcion.estudiante.toString()){
-            isEnabled = true
-          }
-        })
-        if(isEnabled){
-          const avanceEditado = await ModeloAvance.findByIdAndUpdate(
-            args._id,
-            {
-              descripcion: args.descripcion,
-            },
-            { new : true}
-          );
-          return avanceEditado;
-        }
-      }
-      return null;
-    },*/
   },
 };
 

@@ -4,10 +4,7 @@ import { UserModel } from "../usuario/usuario.js";
 
 const { Schema, model } = mongoose;
 
-/**** !!! IMPORTANTE!!! ****/
 
-// 1. Definir el schema
-// 2. Definir el modelo
 
 const avanceSchema = new Schema({
     fecha:{

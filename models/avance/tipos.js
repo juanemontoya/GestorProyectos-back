@@ -1,8 +1,6 @@
 import { gql } from 'apollo-server-express';
 
-//Query = Consulta a la base de datos
-//type Query: Define los tipos de querys que realizo
-//type Avance: En este caso define los tipos de los datos que contiene Avance
+
 
 const tiposAvance = gql`
   type Avance {
@@ -38,9 +36,3 @@ const tiposAvance = gql`
 `;      
 
 export { tiposAvance };
-/*
-editarAvance(
-  creadoPor: String!
-  descripcion: String
-  observaciones: [String]
-): Avance*/
