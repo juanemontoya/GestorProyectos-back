@@ -79,6 +79,9 @@ const tiposProyecto = gql`
     activarProyecto(
       _id: String!
     ): Proyecto
+    reActivarProyecto(
+      _id: String!
+    ): Proyecto
   }
 `;
 

@@ -118,6 +118,17 @@ const resolversProyecto = {
       );
       return proyectoActivo;
     },
+    reActivarProyecto: async (parent, args) => {
+      const proyectoReActivo = await ProjectModel.findByIdAndUpdate(
+        args._id,
+        {
+          estado: "ACTIVO",
+          fechaFin: null,
+        },
+        { new: true }
+      );
+      return proyectoReActivo;
+    },
 
     crearObjetivo: async (parent, args) => {
       const proyectoConObjetivo = await ProjectModel.findByIdAndUpdate(
